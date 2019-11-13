@@ -1,0 +1,139 @@
+schemes:
+- https
+swagger: "2.0"
+info:
+  description: This is a Notes API
+  title: Notes API
+  contact:
+    email: support@notes.com
+  version: 1.1.0
+basePath: /
+paths:
+  /note:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json; charset=utf-8
+      tags:
+      - notes
+      summary: Create note
+      operationId: createNote
+      parameters:
+      - description: Note object to create
+        name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/CreateNoteReq'
+      responses:
+        "201":
+          description: Created
+        "405":
+          description: Not allowed
+        "500":
+          description: Internal Server Error
+  /note/{id}:
+    put:
+      consumes:
+      - application/json
+      produces:
+      - application/json; charset=utf-8
+      tags:
+      - notes
+      summary: Edit note
+      operationId: editNote
+      parameters:
+      - type: integer
+        format: int64
+        description: ID of the note to edit
+        name: id
+        in: path
+        required: true
+      - description: Edited note object
+        name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/EditNoteReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Note'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+  /note/{id}:
+    get:
+      produces:
+      - application/json; charset=utf-8
+      tags:
+      - notes
+      summary: Get note by id
+      operationId: getNoteById
+      parameters:
+      - type: integer
+        format: int64
+        description: ID of note
+        name: id
+        in: path
+        required: true
+      responses:
+        "200":
+          description: OK
+          schema:
+              $ref: '#/definitions/Note'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+definitions:
+  CreateNoteReq:
+    type: object
+    properties:
+      message:
+        type: string
+        x-nullable: true
+      userID:
+        type: integer
+        format: int64
+      importance:
+        type: string
+        enum:
+        - LOW
+        - MEDIUM
+        - HIGH
+
+  UpdateNoteReq:
+    type: object
+    properties:
+      message:
+        type: string
+        x-nullable: true
+      importance:
+        type: string
+        enum:
+        - LOW
+        - MEDIUM
+        - HIGH
+
+  Note:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      message:
+        type: string
+        x-nullable: true
+      userID:
+        type: integer
+        format: int64
+      importance:
+        type: string
+        enum:
+        - LOW
+        - MEDIUM
+        - HIGH

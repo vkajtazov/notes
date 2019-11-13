@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: scylla-migrate
+spec:
+  imagePullSecrets:
+  - name: gcrsecret
+  containers:
+  - name: scylla-migrate
+    image: eu.gcr.io/noomi-vnext-ci/scylla-migrate:latest
+    imagePullPolicy: Always
+    resources:
+      limits:
+        cpu: 1
+        memory: 512Mi
+      requests:
+        cpu: 1
+        memory: 510Mi
+  restartPolicy: Never
